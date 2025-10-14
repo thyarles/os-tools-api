@@ -22,9 +22,15 @@ def lynx():
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE,
                                 check=True,
-                                text=True)
+                                text=False)
 
-        lines = [line.strip() for line in result.stdout.splitlines() if line.strip()]
+        stdout_data = result.stdout.decode('latin1', errors='replace')
+        stderr_data = result.stderr.decode('latin1', errors='replace')
+
+        if result.returncode != 0:
+            return jsonify({'error': 'Failed to extract text', 'details': stderr_data}), 500
+
+        lines = [line.strip() for line in stdout_data.splitlines() if line.strip()]
         text = '\n'.join(lines)
 
         return jsonify({'text': text})

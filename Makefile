@@ -15,10 +15,13 @@ run:
 dev:
 	docker run --rm -p $(APP_PORT):$(APP_PORT) -v "$(pwd)/app:/app" $(APP_IMAGE_NAME)
 
+dtest:
+	docker run --rm -v "./app:/app" $(APP_IMAGE_NAME) sh -c "cd /app && pytest"
+
 test:
 	cd app && pytest
 
 push:
 	docker push $(APP_IMAGE_NAME)
 
-all: test build run
+all: test build dtest push
