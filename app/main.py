@@ -8,6 +8,17 @@ from app.tools.unrtf import unrtf
 app = Flask(__name__)
 swagger = Swagger(app)
 
+@app.route('/ping', methods=['GET'])
+def ping():
+    """
+    Test the liveness of the API
+    ---
+    responses:
+      200:
+        description: Server is up and running
+    """
+    return "Pong", 200
+
 @app.route('/antiword', methods=['POST'])
 def extract_text():
     """
