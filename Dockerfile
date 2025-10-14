@@ -1,9 +1,11 @@
 # Use a slim Python base image
-FROM python:3.13-alpine
+FROM python:3.13-slim
 
 # Install tools
-RUN apk update && \
-    apk add --no-cache antiword ghostscript lynx unrtf
+RUN apt-get update && \
+    apt-get install -y antiword ghostscript unrtf && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Set work directory
 WORKDIR /
