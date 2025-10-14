@@ -3,7 +3,7 @@ FROM python:3.13-slim
 
 # Install tools
 RUN apt-get update && \
-    apt-get install -y antiword ghostscript unrtf && \
+    apt-get install -y antiword lynx ghostscript unrtf && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
