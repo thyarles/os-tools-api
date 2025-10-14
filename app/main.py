@@ -1,0 +1,133 @@
+from flask import Flask
+from flasgger import Swagger
+from app.tools.antiword import antiword
+from app.tools.ghostscript import ghostscript
+from app.tools.lynx import lynx
+from app.tools.unrtf import unrtf
+
+app = Flask(__name__)
+swagger = Swagger(app)
+
+@app.route('/antiword', methods=['POST'])
+def extract_text():
+    """
+    Extract text from a .doc (Word 97-2003) file
+    ---
+    consumes:
+      - multipart/form-data
+    parameters:
+      - name: file
+        in: formData
+        type: file
+        required: true
+        description: The .doc file to upload
+    responses:
+      200:
+        description: Extracted text
+        schema:
+          type: object
+          properties:
+            text:
+              type: string
+              description: Extracted plain text
+      400:
+        description: Bad request (e.g., missing file or wrong file type)
+      500:
+        description: Internal error during text extraction
+    """  
+    return antiword()
+
+@app.route('/fix-pdf', methods=['POST'])
+def fix_pdf():
+    """
+    Fix a PDF using Ghostscript with optional custom parameters
+    ---
+    consumes:
+      - multipart/form-data
+    parameters:
+      - name: file
+        in: formData
+        type: file
+        required: true
+        description: The PDF file to upload
+      - name: gs_options
+        in: formData
+        type: string
+        required: false
+        description: Optional Ghostscript options as a JSON object (e.g., {"-dPDFSETTINGS":"/ebook","-dEmbedAllFonts":"true"})
+    responses:
+      200:
+        description: Fixed PDF file
+        content:
+          application/pdf:
+            schema:
+              type: string
+              format: binary
+      400:
+        description: Bad request (e.g., missing file, wrong file type, or invalid options)
+      500:
+        description: Internal error during PDF processing
+    """  
+    return ghostscript()
+
+@app.route('/lynx', methods=['POST'])
+def extract_lynx():
+    """
+    Extract text from an HTML file using Lynx
+    ---
+    consumes:
+      - multipart/form-data
+    parameters:
+      - name: file
+        in: formData
+        type: file
+        required: true
+        description: The .html file to upload
+    responses:
+      200:
+        description: Extracted text
+        schema:
+          type: object
+          properties:
+            text:
+              type: string
+              description: Extracted plain text
+      400:
+        description: Bad request (e.g., missing file, wrong file type)
+      500:
+        description: Internal error during text extraction
+    """
+    return lynx()
+
+@app.route('/unrtf', methods=['POST'])
+def extract_unrtf():
+    """
+    Extract text from an RTF file using unrtf
+    ---
+    consumes:
+      - multipart/form-data
+    parameters:
+      - name: file
+        in: formData
+        type: file
+        required: true
+        description: The .rtf file to upload
+    responses:
+      200:
+        description: Extracted text
+        schema:
+          type: object
+          properties:
+            text:
+              type: string
+              description: Extracted plain text
+      400:
+        description: Bad request (e.g., missing file, wrong file type)
+      500:
+        description: Internal error during text extraction
+    """
+    return unrtf()
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
