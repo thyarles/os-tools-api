@@ -2,16 +2,19 @@ import subprocess
 import tempfile
 import os
 from flask import request, jsonify
+from app.common.decoder import decode_text
 
 def odt2txt():
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'}), 400
 
     file = request.files['file']
-    if file.filename == '':
+    filename = getattr(file, 'filename', '') or ''
+
+    if filename == '':
         return jsonify({'error': 'No selected file'}), 400
 
-    if not file.filename.lower().endswith('.odt'):
+    if not filename.lower().endswith('.odt'):
         return jsonify({'error': 'Only .odt files are supported'}), 400
 
     with tempfile.NamedTemporaryFile(delete=False, suffix=".odt") as temp_file:
@@ -24,8 +27,8 @@ def odt2txt():
                                 check=True,
                                 text=False)
 
-        stdout_data = result.stdout.decode('utf-8', errors='ignore')
-        stderr_data = result.stderr.decode('utf-8', errors='ignore')
+        stdout_data = decode_text(result.stdout)
+        stderr_data = decode_text(result.stderr)
 
         if result.returncode != 0:
             return jsonify({'error': 'Failed to extract text', 'details': stderr_data}), 500
