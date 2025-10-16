@@ -4,6 +4,7 @@ from app.tools.antiword import antiword
 from app.tools.ghostscript import ghostscript
 from app.tools.lynx import lynx
 from app.tools.unrtf import unrtf
+from app.tools.odt2txt import odt2txt
 
 app = Flask(__name__)
 swagger = Swagger(app)
@@ -139,6 +140,34 @@ def extract_unrtf():
     """
     return unrtf()
 
+@app.route('/odt2txt', methods=['POST'])
+def extract_odt2txt():
+    """
+    Extract text from an ODT file using odt2txt
+    ---
+    consumes:
+      - multipart/form-data
+    parameters:
+      - name: file
+        in: formData
+        type: file
+        required: true
+        description: The .odt file to upload
+    responses:
+      200:
+        description: Extracted text
+        schema:
+          type: object
+          properties:
+            text:
+              type: string
+              description: Extracted plain text
+      400:
+        description: Bad request (e.g., missing file, wrong file type)
+      500:
+        description: Internal error during text extraction
+    """
+    return odt2txt()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

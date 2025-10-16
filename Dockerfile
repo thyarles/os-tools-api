@@ -2,10 +2,15 @@
 FROM python:3.13-slim
 
 # Install tools
-RUN apt-get update && \
-    apt-get install -y antiword lynx ghostscript unrtf && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+    && apt-get install -y \
+       antiword \
+       lynx \
+       ghostscript \
+       unrtf \
+       odt2txt \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set work directory
 WORKDIR /
