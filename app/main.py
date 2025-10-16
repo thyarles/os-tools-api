@@ -7,7 +7,14 @@ from app.tools.unrtf import unrtf
 from app.tools.odt2txt import odt2txt
 
 app = Flask(__name__)
-swagger = Swagger(app)
+swagger_template = {
+    "info": {
+        "title": "OS Tools API",
+        "description": "API documentation",
+        "version": "0.0.7",
+    }
+}
+swagger = Swagger(app, template=swagger_template)
 
 @app.route('/ping', methods=['GET'])
 def ping():
