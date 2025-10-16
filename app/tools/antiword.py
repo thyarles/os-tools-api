@@ -24,8 +24,8 @@ def antiword():
                                 check=True,
                                 text=False)
 
-        stdout_data = result.stdout.decode('latin1', errors='replace')
-        stderr_data = result.stderr.decode('latin1', errors='replace')
+        stdout_data = result.stdout.decode('latin1', errors='ignore')
+        stderr_data = result.stderr.decode('latin1', errors='ignore')
 
         lines = [line.strip() for line in stdout_data.splitlines() if line.strip()]
         text = '\n\n'.join(lines)

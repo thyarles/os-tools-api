@@ -26,8 +26,8 @@ def unrtf():
             text=False
         )
 
-        stdout_data = result.stdout.decode('latin1', errors='replace')
-        stderr_data = result.stderr.decode('latin1', errors='replace')
+        stdout_data = result.stdout.decode('latin1', errors='ignore')
+        stderr_data = result.stderr.decode('latin1', errors='ignore')
 
         if result.returncode != 0:
             return jsonify({'error': 'Failed to extract text', 'details': stderr_data}), 500
