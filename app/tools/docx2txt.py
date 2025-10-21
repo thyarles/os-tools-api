@@ -5,7 +5,7 @@ from flask import request, jsonify
 from app.common.decoder import decode_text
 
 
-def lynx():
+def docx2txt():
     if "file" not in request.files:
         return jsonify({"error": "No file part"}), 400
 
@@ -15,15 +15,15 @@ def lynx():
     if filename == "":
         return jsonify({"error": "No selected file"}), 400
 
-    if not filename.lower().endswith(".html"):
-        return jsonify({"error": "Only .html files are supported"}), 400
+    if not filename.lower().endswith(".docx"):
+        return jsonify({"error": "Only .docx files are supported"}), 400
 
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".html") as temp_file:
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".docx") as temp_file:
         file.save(temp_file.name)
 
     try:
         result = subprocess.run(
-            ["lynx", "-dump", "-nolist", temp_file.name],
+            ["docx2txt", temp_file.name, "-"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             check=True,

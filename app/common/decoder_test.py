@@ -1,5 +1,6 @@
 from app.common.decoder import decode_text
 
+
 def test_decode_utf8_success():
     original = "hello ✓"
     data = original.encode("utf-8")

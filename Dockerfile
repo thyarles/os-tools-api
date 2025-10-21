@@ -9,20 +9,24 @@ RUN apt-get update \
        ghostscript \
        unrtf \
        odt2txt \
+       docx2txt \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Set work directory
-WORKDIR /
+WORKDIR /app
 
 # Copy application files
-COPY app/requirements.txt /app/
-RUN pip install --no-cache-dir -r /app/requirements.txt
+COPY app/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app/ /app
+COPY app .
 
 # Expose the port
 EXPOSE 5000
+
+# Set path
+ENV PYTHONPATH=/
 
 # Run the application
 CMD ["python", "-m", "app.main"]

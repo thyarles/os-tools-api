@@ -5,18 +5,20 @@ from app.tools.ghostscript import ghostscript
 from app.tools.lynx import lynx
 from app.tools.unrtf import unrtf
 from app.tools.odt2txt import odt2txt
+from app.tools.docx2txt import docx2txt
 
 app = Flask(__name__)
 swagger_template = {
     "info": {
         "title": "OS Tools API",
         "description": "API documentation",
-        "version": "0.0.8",
+        "version": "0.0.10",
     }
 }
 swagger = Swagger(app, template=swagger_template)
 
-@app.route('/ping', methods=['GET'])
+
+@app.route("/ping", methods=["GET"])
 def ping():
     """
     Test the liveness of the API
@@ -27,7 +29,9 @@ def ping():
     """
     return "Pong", 200
 
-@app.route('/antiword', methods=['POST'])
+
+@app.route("/antiword", methods=["POST"])
+@app.route("/doc", methods=["POST"])
 def extract_text():
     """
     Extract text from a .doc (Word 97-2003) file
@@ -53,10 +57,12 @@ def extract_text():
         description: Bad request (e.g., missing file or wrong file type)
       500:
         description: Internal error during text extraction
-    """  
+    """
     return antiword()
 
-@app.route('/fix-pdf', methods=['POST'])
+
+@app.route("/fix-pdf", methods=["POST"])
+@app.route("/pdf", methods=["POST"])
 def fix_pdf():
     """
     Fix a PDF using Ghostscript with optional custom parameters
@@ -86,10 +92,13 @@ def fix_pdf():
         description: Bad request (e.g., missing file, wrong file type, or invalid options)
       500:
         description: Internal error during PDF processing
-    """  
+    """
     return ghostscript()
 
-@app.route('/lynx', methods=['POST'])
+
+@app.route("/lynx", methods=["POST"])
+@app.route("/html", methods=["POST"])
+@app.route("/htm", methods=["POST"])
 def extract_lynx():
     """
     Extract text from an HTML file using Lynx
@@ -118,7 +127,9 @@ def extract_lynx():
     """
     return lynx()
 
-@app.route('/unrtf', methods=['POST'])
+
+@app.route("/unrtf", methods=["POST"])
+@app.route("/rtf", methods=["POST"])
 def extract_unrtf():
     """
     Extract text from an RTF file using unrtf
@@ -147,7 +158,9 @@ def extract_unrtf():
     """
     return unrtf()
 
-@app.route('/odt2txt', methods=['POST'])
+
+@app.route("/odt2txt", methods=["POST"])
+@app.route("/odt", methods=["POST"])
 def extract_odt2txt():
     """
     Extract text from an ODT file using odt2txt
@@ -176,5 +189,37 @@ def extract_odt2txt():
     """
     return odt2txt()
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+
+@app.route("/docx2txt", methods=["POST"])
+@app.route("/docx", methods=["POST"])
+def extract_docx2txt():
+    """
+    Extract text from a DOCX file using docx2txt
+    ---
+    consumes:
+      - multipart/form-data
+    parameters:
+      - name: file
+        in: formData
+        type: file
+        required: true
+        description: The .docx file to upload
+    responses:
+      200:
+        description: Extracted text
+        schema:
+          type: object
+          properties:
+            text:
+              type: string
+              description: Extracted plain text
+      400:
+        description: Bad request (e.g., missing file, wrong file type)
+      500:
+        description: Internal error during text extraction
+    """
+    return docx2txt()
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)

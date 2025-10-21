@@ -9,17 +9,17 @@ def client():
     return app.test_client()
 
 
-def test_odt2txt_success(client):
-    test_file_path = "./tools/test.odt"
-    assert os.path.exists(test_file_path), "test.odt file is missing"
+def test_docx2txt_success(client):
+    test_file_path = "./tools/test.docx"
+    assert os.path.exists(test_file_path), "test.docx file is missing"
 
     with open(test_file_path, "rb") as f:
-        data = {"file": (f, "test.odt")}
+        data = {"file": (f, "test.docx")}
         response = client.post(
-            "/odt2txt", data=data, content_type="multipart/form-data"
+            "/docx2txt", data=data, content_type="multipart/form-data"
         )
 
     assert response.status_code == 200
     json_data = response.get_json()
     assert "text" in json_data
-    assert "123odt321" in json_data["text"]
+    assert "123docx321" in json_data["text"]
