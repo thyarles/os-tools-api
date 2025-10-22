@@ -16,7 +16,7 @@ def test_antiword_success(client):
     with open(test_file_path, "rb") as f:
         data = {"file": (f, "test.doc")}
         response = client.post(
-            "/antiword", data=data, content_type="multipart/form-data"
+            "/doc", data=data, content_type="multipart/form-data"
         )
 
     assert response.status_code == 200

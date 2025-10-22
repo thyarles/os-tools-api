@@ -16,7 +16,7 @@ def test_odt2txt_success(client):
     with open(test_file_path, "rb") as f:
         data = {"file": (f, "test.odt")}
         response = client.post(
-            "/odt2txt", data=data, content_type="multipart/form-data"
+            "/odt", data=data, content_type="multipart/form-data"
         )
 
     assert response.status_code == 200

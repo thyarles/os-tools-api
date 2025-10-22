@@ -12,7 +12,7 @@ swagger_template = {
     "info": {
         "title": "OS Tools API",
         "description": "API documentation",
-        "version": "0.0.10",
+        "version": "1.0.0",
     }
 }
 swagger = Swagger(app, template=swagger_template)
@@ -30,7 +30,6 @@ def ping():
     return "Pong", 200
 
 
-@app.route("/antiword", methods=["POST"])
 @app.route("/doc", methods=["POST"])
 def extract_text():
     """
@@ -61,7 +60,6 @@ def extract_text():
     return antiword()
 
 
-@app.route("/fix-pdf", methods=["POST"])
 @app.route("/pdf", methods=["POST"])
 def fix_pdf():
     """
@@ -96,7 +94,6 @@ def fix_pdf():
     return ghostscript()
 
 
-@app.route("/lynx", methods=["POST"])
 @app.route("/html", methods=["POST"])
 @app.route("/htm", methods=["POST"])
 def extract_lynx():
@@ -128,7 +125,6 @@ def extract_lynx():
     return lynx()
 
 
-@app.route("/unrtf", methods=["POST"])
 @app.route("/rtf", methods=["POST"])
 def extract_unrtf():
     """
@@ -159,7 +155,6 @@ def extract_unrtf():
     return unrtf()
 
 
-@app.route("/odt2txt", methods=["POST"])
 @app.route("/odt", methods=["POST"])
 def extract_odt2txt():
     """
@@ -190,7 +185,6 @@ def extract_odt2txt():
     return odt2txt()
 
 
-@app.route("/docx2txt", methods=["POST"])
 @app.route("/docx", methods=["POST"])
 def extract_docx2txt():
     """

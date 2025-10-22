@@ -15,7 +15,7 @@ def test_unrtf_success(client):
 
     with open(test_file_path, "rb") as f:
         data = {"file": (f, "test.rtf")}
-        response = client.post("/unrtf", data=data, content_type="multipart/form-data")
+        response = client.post("/rtf", data=data, content_type="multipart/form-data")
 
     assert response.status_code == 200
     json_data = response.get_json()

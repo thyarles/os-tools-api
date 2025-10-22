@@ -15,7 +15,7 @@ def test_lynx_success(client):
 
     with open(test_file_path, "rb") as f:
         data = {"file": (f, "test.html")}
-        response = client.post("/lynx", data=data, content_type="multipart/form-data")
+        response = client.post("/html", data=data, content_type="multipart/form-data")
 
     assert response.status_code == 200
     json_data = response.get_json()

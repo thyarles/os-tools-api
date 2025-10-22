@@ -16,7 +16,7 @@ def test_docx2txt_success(client):
     with open(test_file_path, "rb") as f:
         data = {"file": (f, "test.docx")}
         response = client.post(
-            "/docx2txt", data=data, content_type="multipart/form-data"
+            "/docx", data=data, content_type="multipart/form-data"
         )
 
     assert response.status_code == 200

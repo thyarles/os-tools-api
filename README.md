@@ -1,6 +1,15 @@
 # Antiword API
 
-A lightweight Flask-based API that accepts `.doc` (Word 97-2003) files, extracts the text using `antiword`, and returns it in a clean JSON format.
+A lightweight Flask-based API that accepts the files bellow, extracts the text, and returns it in a clean JSON format.
+
+## Extensions supported
+
+* `.doc` (Word 97-2003)
+* `.docx`
+* `.odt`
+* `.rtf`
+* `.odt`
+* `.pdf` (return a fixed and smaller PDF to get text elsewhere)
 
 Includes Swagger UI documentation for ease of testing and integration.
 
@@ -42,11 +51,11 @@ Includes Swagger UI documentation for ease of testing and integration.
 Clone the repository and build the image:
 
 ```bash
-git clone https://github.com/your-org/doc-text-api.git
-cd doc-text-api
+git clone https://github.com/thyarles/os-tools-api.git
+cd os-tools-api
 
-docker build -t doc-text-api .
-docker run -p 5000:5000 doc-text-api
+make all
+make run (it'll call docker and run on port 5000)
 ````
 
 Now the API is available at: [http://localhost:5000](http://localhost:5000)
@@ -55,14 +64,14 @@ Now the API is available at: [http://localhost:5000](http://localhost:5000)
 
 ## API Usage
 
-### Endpoint: `POST /extract-text`
+### Endpoint: `POST /doc`
 
 **Form Field**: `file` — must be a `.doc` file (old Word format)
 
 #### cURL Example
 
 ```bash
-curl -X POST http://localhost:5000/extract-text \
+curl -X POST http://localhost:5000/doc \
   -F "file=@/path/to/your/file.doc"
 ```
 
@@ -141,7 +150,6 @@ swagger = Swagger(app, template={
 
 ## Security Notes
 
-* Only accepts `.doc` files — does **not** process `.docx`.
 * No authentication is enabled by default.
 * Consider wrapping this API behind a gateway or firewall in production environments.
 
@@ -160,10 +168,6 @@ Pull requests are welcome! For major changes, open an issue first to discuss wha
 ---
 
 ## FAQ
-
-### Why only `.doc` files?
-
-This tool uses `antiword`, which only supports old Word binary formats (`.doc`). For `.docx`, consider `python-docx` or `pandoc`.
 
 ### Can it return HTML or Markdown?
 
