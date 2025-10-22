@@ -21,3 +21,15 @@ def test_lynx_success(client):
     json_data = response.get_json()
     assert "text" in json_data
     assert "123html321" in json_data["text"]
+
+    test_file_path = "./tools/test.htm"
+    assert os.path.exists(test_file_path), "test.htm file is missing"
+
+    with open(test_file_path, "rb") as f:
+        data = {"file": (f, "test.htm")}
+        response = client.post("/htm", data=data, content_type="multipart/form-data")
+
+    assert response.status_code == 200
+    json_data = response.get_json()
+    assert "text" in json_data
+    assert "123htm321" in json_data["text"]

@@ -12,7 +12,7 @@ swagger_template = {
     "info": {
         "title": "OS Tools API",
         "description": "API documentation",
-        "version": "1.0.0",
+        "version": "1.0.1",
     }
 }
 swagger = Swagger(app, template=swagger_template)

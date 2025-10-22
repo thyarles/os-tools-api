@@ -16,7 +16,8 @@ def lynx():
         return jsonify({"error": "No selected file"}), 400
 
     if not filename.lower().endswith(".html"):
-        return jsonify({"error": "Only .html files are supported"}), 400
+        if not filename.lower().endswith(".htm"):
+            return jsonify({"error": "Only .html files are supported"}), 400
 
     with tempfile.NamedTemporaryFile(delete=False, suffix=".html") as temp_file:
         file.save(temp_file.name)
