@@ -12,7 +12,7 @@ swagger_template = {
     "info": {
         "title": "OS Tools API",
         "description": "API documentation",
-        "version": "1.0.1",
+        "version": "1.0.2",
     }
 }
 swagger = Swagger(app, template=swagger_template)
@@ -60,7 +60,7 @@ def extract_text():
     return antiword()
 
 
-@app.route("/pdf", methods=["POST"])
+@app.route("/fix-pdf", methods=["POST"])
 def fix_pdf():
     """
     Fix a PDF using Ghostscript with optional custom parameters

@@ -17,7 +17,7 @@ def test_fix_pdf_preserves_text(client):
     with open(test_file_path, "rb") as f:
         data = {"file": (f, "test.pdf")}
         response = client.post(
-            "/pdf", data=data, content_type="multipart/form-data"
+            "/fix-pdf", data=data, content_type="multipart/form-data"
         )
 
     assert response.status_code == 200

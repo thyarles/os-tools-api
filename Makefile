@@ -19,7 +19,7 @@ dtest:
 	docker run --rm -v "./app:/app" $(APP_IMAGE_NAME) sh -c "cd /app && pytest"
 
 test:
-	cd app && pytest
+	cd app && ../venv/bin/pytest
 
 push:
 	docker push $(APP_IMAGE_NAME)
